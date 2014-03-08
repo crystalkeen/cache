@@ -17,4 +17,13 @@ public class CacheClient {
             e.printStackTrace();
         }
     }
+
+
+    public String get(String key){
+        return null;
+    }
+
+    public void set(String key,String value){
+
+    }
 }
