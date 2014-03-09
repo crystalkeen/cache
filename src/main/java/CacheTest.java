@@ -16,7 +16,7 @@ public class CacheTest {
     private static void testCache(int threads, int operations) {
 
         for(int i =0;i<threads;i++){
-            new CacheTestThread(operations).run();
+            new CacheTestThread(operations,i).run();
         }
 
     }
