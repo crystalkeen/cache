@@ -1,7 +1,5 @@
-import client.HTTPProtocol;
+import client.HttpProtocol;
 import client.Response;
-import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggerFactory;
 
 /**
  * User: Andrey
@@ -9,28 +7,39 @@ import org.apache.log4j.spi.LoggerFactory;
  * Time: 21:55
  */
 public class CacheTestThread implements Runnable {
-//    final Logger logger = LoggerFactory.getLogger(CacheTestThread.class);
+//        final Logger logger = LoggerFactory.getLogger(CacheTestThread.class);
     private int op = 1000;
     private int id = 0;
-    HTTPProtocol hp;
-    public CacheTestThread(int operations,int id) {
+    HttpProtocol httpProtocol;
+
+    public CacheTestThread(int operations, int id) {
 
         this.op = operations;
         this.id = id;
-        hp = new HTTPProtocol("localhost",8182);
+        httpProtocol = new HttpProtocol("localhost", 8182);
     }
 
 
     @Override
     public void run() {
-        for(int i = 0;i<this.op;i++){
-            String key = "thread1"+id;
-            String value = "value"+id;
-            Response r =  hp.setValue(key, value);
-            if(r.getResponseCode()==200){
-                Response rGet = hp.getValue(key);
-                if(rGet.getResponseCode()==200){
-                    if(!rGet.getResponse().equals(value)){
+        for (int i = 0; i < this.op; i++) {
+            String key = "thread1" + id;
+            String value = "value" + id;
+            Response r = null;
+            try {
+                r = httpProtocol.putValue(key, value);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (r.getResponseCode() == 200) {
+                Response rGet = null;
+                try {
+                    rGet = httpProtocol.getValue(key);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (rGet.getResponseCode() == 200) {
+                    if (!rGet.getResponse().equals(value)) {
 //                        logger.error("invalid value");
                     }
                 }
@@ -38,7 +47,6 @@ public class CacheTestThread implements Runnable {
 
         }
     }
-
 
 
 }

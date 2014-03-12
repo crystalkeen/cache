@@ -7,7 +7,7 @@ package client;
  */
 public interface CacheProtocol {
 
-    public Response getValue(String key);
+    public Response getValue(String key) throws Exception;
 
-    public Response setValue(String key, String value);
+    public Response putValue(String key, String value) throws Exception;
 }

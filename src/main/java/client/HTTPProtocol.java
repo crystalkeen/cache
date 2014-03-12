@@ -1,31 +1,43 @@
 package client;
 
+import com.google.common.base.Joiner;
+import org.eclipse.jetty.util.URIUtil;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
+import java.security.URIParameter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * User: Andrey
  * Date: 09.03.14
  * Time: 16:58
  */
-public class HTTPProtocol implements CacheProtocol{
+public class HttpProtocol implements CacheProtocol {
 
-    String  host=null;
-    Integer port=null;
+    String host = null;
+    Integer port = null;
 
 
-    public HTTPProtocol(String host, Integer port) {
+    public HttpProtocol(String host, Integer port) {
         this.host = host;
         this.port = port;
     }
 
-    private Response sendGet() throws Exception {
+    private Response sendGet(String action, String key, String value) throws Exception {
+        Map<String, String> params = new HashMap<String, String>(2);
+        params.put("key", key);
+        params.put("value", value);
 
-        String url = "http://www.google.com/search?q=mkyong";
+        Joiner.MapJoiner joiner = Joiner.on("&").withKeyValueSeparator("=").useForNull("");
+        String query = joiner.join(params);
 
-        URL obj = new URL(url);
+        URL obj = new URL("http", host, "/" + action + "?" + query);
+
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         // optional default is GET
@@ -46,17 +58,17 @@ public class HTTPProtocol implements CacheProtocol{
 
         //print result
         System.out.println(response.toString());
-        return new Response(response.toString(),responseCode);
+        return new Response(response.toString(), responseCode);
 
     }
 
     @Override
-    public Response getValue(String key) {
-        return new Response(null,200);
+    public Response getValue(String key) throws Exception {
+        return sendGet("get", key, null);
     }
 
     @Override
-    public Response setValue(String key, String value) {
-        return new Response(null,200);
+    public Response putValue(String key, String value) throws Exception {
+        return sendGet("put", key, value);
     }
 }
