@@ -31,15 +31,18 @@ public class CacheTestThread implements Runnable {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (r.getResponseCode() == 200) {
-                Response rGet = null;
-                try {
-                    rGet = httpProtocol.getValue(key);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            Response rGet = null;
+            try {
+                rGet = httpProtocol.getValue(key);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if(rGet==null){
+                System.out.println("error: no response");
+            }else{
                 if (rGet.getResponseCode() == 200) {
                     if (!rGet.getResponse().equals(value)) {
+                        System.out.println("error value");
 //                        logger.error("invalid value");
                     }
                 }

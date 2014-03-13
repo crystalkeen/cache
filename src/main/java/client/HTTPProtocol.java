@@ -36,7 +36,7 @@ public class HttpProtocol implements CacheProtocol {
         Joiner.MapJoiner joiner = Joiner.on("&").withKeyValueSeparator("=").useForNull("");
         String query = joiner.join(params);
 
-        URL obj = new URL("http", host, "/" + action + "?" + query);
+        URL obj = new URL("http", host, 8182, "/scan/" + action + "?" + query);
 
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -57,7 +57,7 @@ public class HttpProtocol implements CacheProtocol {
         in.close();
 
         //print result
-        System.out.println(response.toString());
+//        System.out.println(response.toString());
         return new Response(response.toString(), responseCode);
 
     }

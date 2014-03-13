@@ -9,7 +9,8 @@ public class PutResource extends ServerResource {
 
         String key = getQuery().getValues("key");
         String value = getQuery().getValues("value");
-        String lifeTime = getQuery().getValues("time");
+        String lifeTime = "0";
+//        String lifeTime = getQuery().getValues("time");
 
         CacheMap.put(key, value, Long.valueOf(lifeTime));
 
