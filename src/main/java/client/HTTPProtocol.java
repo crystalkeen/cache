@@ -71,4 +71,9 @@ public class HttpProtocol implements CacheProtocol {
     public Response putValue(String key, String value) throws Exception {
         return sendGet("put", key, value);
     }
+
+    public Response gaskValueTest() throws Exception{
+        return sendGet("test", "","");
+
+    }
 }

@@ -1,5 +1,6 @@
 import cache.GetResource;
 import cache.PutResource;
+import cache.SimpleOkServise;
 import org.restlet.Component;
 import org.restlet.data.Protocol;
 import org.restlet.resource.ServerResource;
@@ -21,6 +22,7 @@ public class CacheServer extends ServerResource implements Daemon {
 
         router.attach("/get", GetResource.class);
         router.attach("/put", PutResource.class);
+        router.attach("/test", SimpleOkServise.class);
 
         component.getDefaultHost().attach("/scan", router);
         component.start();
